@@ -141,6 +141,16 @@ public final class Util {
 
         OutputStream os;
 
+
+        // Try to get filename key
+        String filename = params.getString("filename");
+
+        // If found
+        if (filename != null) {
+            // Remove from params
+            params.remove("filename");
+        }
+
         if (method.equals("GET")) {
             url = url + "?" + encodeUrl(params);
         }
@@ -185,7 +195,7 @@ public final class Util {
             if (!dataparams.isEmpty()) {
 
                 for (String key: dataparams.keySet()){
-                    os.write(("Content-Disposition: form-data; filename=\"" + key + "\"" + endLine).getBytes());
+                    os.write(("Content-Disposition: form-data; filename=\"" + ((filename) ? filename : key) + "\"" + endLine).getBytes());
                     os.write(("Content-Type: content/unknown" + endLine + endLine).getBytes());
                     os.write(dataparams.getByteArray(key));
                     os.write((endLine + "--" + strBoundary + endLine).getBytes());
